@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
+    <meta name="author" content="AdminKit">
+    <meta name="keywords"
+        content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="shortcut icon" href="/img/icons/icon-48x48.png" />
+
+    <link rel="canonical" href="https://demo-basic.adminkit.io/" />
+
+    <title>AdminKit Demo - Bootstrap 5 Admin Template</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <link href="/css/app.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="wrapper">
+       <nav th:insert="admin/assets/navbar :: sidebar(${view})"></nav>
+
+        <div class="main">
+           <nav th:insert="admin/assets/navbar::main"></nav>
+
+            <th:block th:switch="${view}">
+                <main th:case="dashboard" th:insert="admin/layout/index::dashboard"></main>
+                <main th:case="catalog" th:insert="admin/layout/catalog/index::catalog(${catalogs},${current_page},${total_page},${size})"></main>
+                <main th:case="catalog_add" th:insert="admin/layout/catalog/add::catalog-add"></main>
+                <main th:case="catalog_edit" th:insert="admin/layout/catalog/edit::catalog-edit(${cat})"></main>
+                <main th:case="product" th:insert="admin/layout/product/index::product"></main>
+                <main th:case="user" th:insert="admin/layout/user/index::user"></main>
+            </th:block>
+
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row text-muted">
+                        <div class="col-6 text-start">
+                            <p class="mb-0">
+                                <a class="text-muted" href="" target="_blank"><strong>DemoAdminKit</strong></a>
+                                - <a class="text-muted" href="" target="_blank"><strong>Bootstrap Admin
+                                        Template</strong></a> &copy;
+                            </p>
+                        </div>
+                        <div class="col-6 text-end">
+                            <ul class="list-inline">
+                                <li class="list-inline-item">
+                                    <a class="text-muted" href="#" target="_blank">Support</a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a class="text-muted" href="#" target="_blank">Help Center</a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a class="text-muted" href="#" target="_blank">Privacy</a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a class="text-muted" href="#" target="_blank">Terms</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+<th:block th:insert="admin/assets/navbar::js"></th:block>
+</body>
+
+</html>

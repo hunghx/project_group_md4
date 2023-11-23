@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="auth/layout/head"></head>
+<body>
+<div class="container login">
+  <form method="post" th:action="@{/handle-signup}" th:object="${signup_form}">
+    <div class="mb-3">
+      <label class="form-label">Full name</label>
+      <input type="text" class="form-control" th:field="*{fullName}">
+      <p style="color:red" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></p>
+
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Email address</label>
+      <input type="text" class="form-control" th:field="*{email}">
+      <p style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+    </div><div class="mb-3">
+    <label class="form-label">Phone Number</label>
+    <input type="text" class="form-control" th:field="*{phone}">
+    <p style="color:red" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></p>
+
+  </div>
+    <div class="mb-3">
+      <label class="form-label">Password</label>
+      <input type="password" class="form-control" th:field="*{password}" >
+      <p style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+
+    </div><div class="mb-3">
+    <label class="form-label">Confirm Password</label>
+    <input type="password" class="form-control" th:field="*{rePassword}">
+    <p style="color:red" th:if="${#fields.hasErrors('rePassword')}" th:errors="*{rePassword}"></p>
+  </div>
+    <div class="mb-3">
+    <label class="form-label">Address</label>
+    <input type="text" class="form-control" th:field="*{address}">
+    <p style="color:red" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
+  </div>
+    <div class="mb-3 form-check">
+      <input type="checkbox" class="form-check-input" id="exampleCheck1">
+      <label class="form-check-label" for="exampleCheck1">Check me out</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+  </form>
+</div>
+<th:block th:insert="auth/layout/foot"></th:block>
+</body>
+</html>

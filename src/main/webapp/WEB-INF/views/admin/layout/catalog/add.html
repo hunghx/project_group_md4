@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<main class="content" th:fragment="catalog-add">
+    <div class="container-fluid p-0">
+        <div class="card">
+            <h1 class="text-center mt-3">Thêm mới danh mục</h1>
+            <form action="/catalog/create" method="post" style="max-width: 30rem; margin: 0 auto" class="p-4 mt-5">
+                <div class="mb-3">
+                    <label for="category_name" class="form-label">Category Name</label>
+                    <input type="text" name="name" class="form-control" id="category_name">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Descriptions</label>
+                    <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+                </div>
+                <button type="submit">Add</button>
+            </form>
+
+        </div>
+    </div>
+</main>
+</body>
+</html>
