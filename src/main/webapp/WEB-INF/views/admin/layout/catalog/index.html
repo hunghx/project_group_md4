@@ -6,14 +6,63 @@
 </head>
 <body>
 <main class="content" th:fragment="catalog(list,page,total,size)">
+    <div id="loading">
+        <div class="lds-circle"><div></div></div>
+    </div>
+
+    <script>
+<!--        fetch        -->
+        // const handleEdit=(id)=>{
+        //     fetch('http://localhost:8080/api/v1/catalog/'+id)
+        //         .then(res=>res.json())
+        //         .then(cat=>{
+        //             document.getElementById("category_id_up").value = cat.id;
+        //             document.getElementById("category_name_up").value = cat.name;
+        //             document.getElementById("description_up").value = cat.description;
+        //         })
+        // }
+
+    //  axios
+    // const handleEdit = async (id)=>{
+    //  let {data} = await axios.get('http://localhost:8080/api/v1/catalog/'+id)
+    //     console.log(data)
+    //     document.getElementById("category_id_up").value = data.id;
+    //     document.getElementById("category_name_up").value = data.name;
+    //     document.getElementById("description_up").value = data.description;
+    // }
+
+
+    // jquery ajax
+        const handleEdit=(id)=>{
+            $("#loading").css("display","flex")
+             // bật loading
+            $.ajax({
+                url: 'http://localhost:8080/api/v1/catalog/'+id,
+                type: 'GET',
+                success: function(cat) {
+                    $("#loading").css("display","none")
+                    $("#modal-edit").modal("show")
+                    // tắt loading
+                    $("#category_id_up").val(cat.id);
+                    $("#category_name_up").val(cat.name);
+                    $("#description_up").val(cat.description);
+
+                }
+                ,error:function (err) {
+                    console.log(err)
+                }
+            });
+        }
+
+    </script>
     <div class="container-fluid p-0">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Demo Category Table</h3>
                 <nav class="navbar navbar-expand-lg bg-light">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="/catalog/add">
-                            <button  class="btn btn-success" >+ Add new Category</button>
+                        <a class="navbar-brand">
+                            <button  class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal-add" >+ Add new Category</button>
                         </a>
                         <form class="d-flex" role="search">
                             <input class="form-control me-2 fst-italic" type="search" placeholder="Enter category's name... "
@@ -43,7 +92,8 @@
                             incididunt ut labore et dolore magna aliqua
                         </td>
                         <td>
-                            <a th:href="@{/catalog/edit/{id}(id=${c.id})}" class="btn btn-warning">Edit</a>
+<!--                            <a th:href="@{/catalog/edit/{id}(id=${c.id})}" class="btn btn-warning">Edit</a>-->
+                            <button th:onclick="|handleEdit(${c.id})|" class="btn btn-warning">Edit</button>
                         </td>
                         <td>
                             <a th:href="@{/catalog/delete/{id}(id=${c.id})}" onclick="return confirm('đừng xóa')" class="btn btn-danger">Delete</a>
@@ -197,6 +247,66 @@
             <!-- /.card-body -->
         </div>
     </div>
+<!--   modal Add -->
+    <!-- Modal -->
+    <div class="modal fade" id="modal-add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form action="/catalog/create" method="post" style="max-width: 30rem; margin: 0 auto" class="p-4 mt-5">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add catalog</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="category_name" class="form-label">Category Name</label>
+                        <input type="text" name="name" class="form-control" id="category_name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Descriptions</label>
+                        <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+<!--     modal edit    -->
+    <div class="modal fade" id="modal-edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form action="/catalog/update" method="post" style="max-width: 30rem; margin: 0 auto" class="p-4 mt-5">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabele">Add catalog</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="category_name" class="form-label">Category ID</label>
+                            <input type="text" name="id" readonly class="form-control" id="category_id_up">
+                        </div>
+                        <div class="mb-3">
+                            <label for="category_name" class="form-label">Category Name</label>
+                            <input type="text" name="name" class="form-control" id="category_name_up">
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Descriptions</label>
+                            <textarea class="form-control" name="description" id="description_up" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </main>
 </body>
 </html>

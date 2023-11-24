@@ -13,7 +13,7 @@ public class HomeController {
     private MailService mailService;
     @RequestMapping({"/",""})
     public String home(){
-        mailService.sendMail("hunghx@rikkeisoft.com","devst2025@gmail.com","test mail","có cái nịt");
+//        mailService.sendMail("hunghx@rikkeisoft.com","devst2025@gmail.com","test mail","có cái nịt");
         return "index";
 
     }
