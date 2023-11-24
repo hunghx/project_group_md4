@@ -11,6 +11,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -29,6 +32,7 @@ import ra.academy.service.catalog.ICatalogService;
 
 import javax.sql.DataSource;
 import java.util.Locale;
+import java.util.Properties;
 
 @Configuration
 @EnableWebMvc
@@ -114,5 +118,23 @@ public class WebConfig implements WebMvcConfigurer , ApplicationContextAware {
 //    public ICatalogService catalogService(){
 //        return new CatalogService(catalogDao());
 //    }
+
+
+    // mailsender
+    @Bean
+    public JavaMailSender mailSender() {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(587);  // Use port 465 for SMTPS with SSL
+
+        mailSender.setUsername("hunghx@rikkeisoft.com");
+        mailSender.setPassword("nnwcpmhclzxvkysz"); // Replace with your Gmail app password
+
+        Properties props = mailSender.getJavaMailProperties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        return mailSender;
+    }
 
 }

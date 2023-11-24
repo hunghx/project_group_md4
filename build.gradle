@@ -26,6 +26,10 @@ dependencies {
   implementation group: 'org.thymeleaf', name: 'thymeleaf-spring5', version: '3.0.11.RELEASE'
   implementation group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '2.5.2'
   implementation 'org.springframework:spring-webmvc:5.3.18'
+// https://mvnrepository.com/artifact/org.springframework/spring-context-support
+  implementation group: 'org.springframework', name: 'spring-context-support', version: '5.3.18'
+// https://mvnrepository.com/artifact/javax.mail/mail
+  implementation group: 'javax.mail', name: 'mail', version: '1.4'
 
   testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
