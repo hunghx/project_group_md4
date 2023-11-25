@@ -2,14 +2,14 @@ package ra.academy.service.catalog;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ra.academy.dao.ICatalogDao;
+import ra.academy.dao.ICatalogRepository;
 import ra.academy.model.Catalog;
 
 import java.util.List;
 @Service
 public class CatalogService implements ICatalogService{
     @Autowired
-    private ICatalogDao catalogDao;
+    private ICatalogRepository catalogDao;
 
 
     @Override
@@ -17,7 +17,7 @@ public class CatalogService implements ICatalogService{
         // tính limit offset
         // giới hạn lấy về
 
-        return catalogDao.findAll(size,page*size);
+        return catalogDao.findAll();
     }
 
     @Override
@@ -31,7 +31,7 @@ public class CatalogService implements ICatalogService{
 
     @Override
     public Catalog findById(Long id) {
-        return catalogDao.findById(id);
+        return catalogDao.findById(id).orElse(null);
     }
 
     @Override
@@ -41,6 +41,6 @@ public class CatalogService implements ICatalogService{
 
     @Override
     public void delete(Long id) {
-        catalogDao.delete(id);
+        catalogDao.deleteById(id);
     }
 }

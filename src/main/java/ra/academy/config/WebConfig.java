@@ -35,10 +35,6 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
-import ra.academy.dao.ICatalogDao;
-import ra.academy.dao.impl.catalog.CatalogDao;
-import ra.academy.service.catalog.CatalogService;
-import ra.academy.service.catalog.ICatalogService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -48,7 +44,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableWebMvc
-@EnableJpaRepositories(basePackages = {"ra.academy.dao.impl"})
+@EnableJpaRepositories(basePackages = {"ra.academy.dao"})
 @EnableTransactionManagement
 @ComponentScan(basePackages = {"ra.academy.controller"
         ,"ra.academy.service","ra.academy.dao","ra.academy.validate"})
