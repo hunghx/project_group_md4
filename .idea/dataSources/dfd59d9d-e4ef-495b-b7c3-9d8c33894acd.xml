@@ -1108,8 +1108,8 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <schema id="316" parent="1" name="prj_04">
-      <IntrospectionTimestamp>2023-11-26.02:50:00</IntrospectionTimestamp>
-      <LocalIntrospectionTimestamp>2023-11-25.12:50:00</LocalIntrospectionTimestamp>
+      <IntrospectionTimestamp>2023-11-26.04:20:05</IntrospectionTimestamp>
+      <LocalIntrospectionTimestamp>2023-11-25.14:20:05</LocalIntrospectionTimestamp>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <schema id="317" parent="1" name="product_crud">
@@ -1149,8 +1149,8 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <CollationName>utf8mb4_vietnamese_ci</CollationName>
     </schema>
     <schema id="329" parent="1" name="quanlydiemthi">
-      <IntrospectionTimestamp>2023-11-26.02:02:10</IntrospectionTimestamp>
-      <LocalIntrospectionTimestamp>2023-11-25.12:02:10</LocalIntrospectionTimestamp>
+      <IntrospectionTimestamp>2023-11-26.04:20:05</IntrospectionTimestamp>
+      <LocalIntrospectionTimestamp>2023-11-25.14:20:05</LocalIntrospectionTimestamp>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <schema id="330" parent="1" name="relationship">
@@ -1217,7 +1217,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
     <table id="348" parent="316" name="catalog">
-      <Engine>InnoDB</Engine>
+      <Engine>MyISAM</Engine>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
     <table id="349" parent="316" name="hibernate_sequence">
@@ -1325,18 +1325,16 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <UnderlyingIndexName>phone</UnderlyingIndexName>
     </key>
     <column id="373" parent="348" name="id">
-      <AutoIncrement>12</AutoIncrement>
       <DasType>bigint|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="374" parent="348" name="name">
-      <DasType>varchar(100)|0s</DasType>
-      <NotNull>1</NotNull>
+    <column id="374" parent="348" name="description">
+      <DasType>varchar(255)|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="375" parent="348" name="description">
-      <DasType>text|0s</DasType>
+    <column id="375" parent="348" name="name">
+      <DasType>varchar(255)|0s</DasType>
       <Position>3</Position>
     </column>
     <index id="376" parent="348" name="PRIMARY">

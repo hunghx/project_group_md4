@@ -9,15 +9,20 @@ import ra.academy.dao.IAccountDao;
 import ra.academy.model.Account;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
+@Transactional
 public class AccountDao implements IAccountDao {
-    @Autowired
-    private SessionFactory sessionFactory;
-    @Autowired
+//    @Autowired
+//    private SessionFactory sessionFactory;
+//    @Autowired
+//    private EntityManager entityManager;
+    @PersistenceContext
     private EntityManager entityManager;
 
     // hibernate có ngôn ngữ truy vấn riêng HQL
@@ -51,25 +56,18 @@ public class AccountDao implements IAccountDao {
 
     @Override
     public void save(Account account) {
-        Session session = sessionFactory.openSession();
+
         if (account.getId() == null) {
             // thêm mới
-            session.save(account);
+            entityManager.persist(account);
         } else {
             // cập nhật
-            // phải lấy ra đối tượng cũ trước
-            Account old = findById(account.getId());
-            // cập nhật đối tượng cũ
-            old.copy(account);
-            session.saveOrUpdate(account);
+            entityManager.merge(account);
         }
-        session.close();
     }
 
     @Override
     public void delete(Long id) {
-        Session session = sessionFactory.openSession();
-        session.delete(findById(id));
-        session.close();
+        entityManager.remove(findById(id));
     }
 }

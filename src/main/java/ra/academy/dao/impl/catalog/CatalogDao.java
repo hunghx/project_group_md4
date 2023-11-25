@@ -12,15 +12,20 @@ import ra.academy.model.Account;
 import ra.academy.model.Catalog;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
+@Transactional
 public class CatalogDao implements ICatalogDao {
-    @Autowired
-    private SessionFactory sessionFactory;
-    @Autowired
+//    @Autowired
+//    private SessionFactory sessionFactory;
+//    @Autowired
+//    private EntityManager entityManager;
+    @PersistenceContext
     private EntityManager entityManager;
 
     @Override
@@ -45,29 +50,19 @@ public class CatalogDao implements ICatalogDao {
 
     @Override
     public void save(Catalog catalog) {
-        Session session = sessionFactory.openSession();
-        Transaction tran = session.beginTransaction(); // tạo 1 phiên giao dịch
+
         if (catalog.getId() == null) {
             // thêm mới
-            session.saveOrUpdate(catalog);
+         entityManager.persist(catalog);
         } else {
             // cập nhật
-            // phải lấy ra đối tượng cũ trước
-            Catalog old = findById(catalog.getId());
-            // cập nhật đối tượng cũ
-            old.copy(catalog); // commit sự thay đổi
-            session.saveOrUpdate(old);
+            entityManager.merge(catalog);
         }
-        tran.commit();
-        session.close();
+
     }
 
     @Override
     public void delete(Long id) {
-        Session session = sessionFactory.openSession();
-        Transaction tran = session.beginTransaction();
-        session.delete(findById(id));
-        tran.commit();
-        session.close();
+       entityManager.remove(findById(id));
     }
 }
