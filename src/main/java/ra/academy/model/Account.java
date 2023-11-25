@@ -1,7 +1,13 @@
 package ra.academy.model;
 
+import javax.persistence.*;
+
+@Entity
 public class Account {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(name = "full_name")
     private String fullName;
     private String email;
     private String password;
@@ -10,6 +16,7 @@ public class Account {
     private String avatarUrl;
     private boolean role = false;
     private boolean status=true;
+
 
     public Account() {
     }
@@ -99,5 +106,15 @@ public class Account {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+    public void copy(Account acc){
+        this.fullName = acc.fullName;
+        this.email = acc.email;
+        this.password = acc.password;
+        this.phone = acc.phone;
+        this.address = acc.address;
+        this.avatarUrl = acc.avatarUrl;
+        this.role = acc.role;
+        this.status = acc.status;
     }
 }

@@ -1,5 +1,6 @@
 package ra.academy.config;
 
+import org.hibernate.SessionFactory;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -9,8 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
 import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -30,6 +30,7 @@ import ra.academy.dao.impl.catalog.CatalogDao;
 import ra.academy.service.catalog.CatalogService;
 import ra.academy.service.catalog.ICatalogService;
 
+import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 import java.util.Locale;
 import java.util.Properties;
@@ -91,20 +92,20 @@ public class WebConfig implements WebMvcConfigurer , ApplicationContextAware {
                 .addResourceLocations("classpath:static/css/","classpath:static/js/","classpath:static/img/");
     }
     // cấu hình csdl
-    @Bean
-    public DataSource dataSource(){
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/prj_04");
-        dataSource.setUsername("root");
-        dataSource.setPassword("18061999");
-        return dataSource;
-    }
+//    @Bean
+//    public DataSource dataSource(){
+//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+//        dataSource.setUrl("jdbc:mysql://localhost:3306/prj_04");
+//        dataSource.setUsername("root");
+//        dataSource.setPassword("18061999");
+//        return dataSource;
+//    }
     // cấu hình jdbc template
-    @Bean
-    public JdbcTemplate jdbcTemplate(){
-        return new JdbcTemplate(dataSource());
-    }
+//    @Bean
+//    public JdbcTemplate jdbcTemplate(){
+//        return new JdbcTemplate(dataSource());
+//    }
 
     // bean dao
 //    @Bean
@@ -135,6 +136,17 @@ public class WebConfig implements WebMvcConfigurer , ApplicationContextAware {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         return mailSender;
+    }
+    @Bean
+    public SessionFactory sessionFactory(){
+        return new org.hibernate.cfg.Configuration()
+                .configure("hibernate-config.xml")
+                .buildSessionFactory();
+    }
+    // quản lí thao tác với các entity
+    @Bean
+    public EntityManager entityManager(){
+        return sessionFactory().createEntityManager();
     }
 
 }

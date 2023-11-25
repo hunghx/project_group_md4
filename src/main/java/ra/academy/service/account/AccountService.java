@@ -40,8 +40,8 @@ public class AccountService implements IAccountService{
     }
 
     @Override
-    public int delete(Long id) {
-        return accountDao.delete(id);
+    public void delete(Long id) {
+         accountDao.delete(id);
     }
 
     @Override

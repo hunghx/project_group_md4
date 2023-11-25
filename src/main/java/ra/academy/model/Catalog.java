@@ -1,8 +1,16 @@
 package ra.academy.model;
 
+import javax.persistence.*;
+
+@Entity // thực thể map với bảng
+@Table(name = "catalog") // tên bảng
 public class Catalog {
+    @Id // khóa chính
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "description")
     private String description;
 
     public Catalog() {
@@ -32,6 +40,10 @@ public class Catalog {
 
     public String getDescription() {
         return description;
+    }
+    public  void copy(Catalog cat){
+        this.name = cat.name;
+        this.description= cat.description;
     }
 
     public void setDescription(String description) {

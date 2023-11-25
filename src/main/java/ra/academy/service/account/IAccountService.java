@@ -11,7 +11,7 @@ public interface IAccountService {
     List<Account> findAll();
     Account findById(Long id);
     void register(FormRegister formRegister);
-    int delete(Long id);
+    void delete(Long id);
     Account login(FormLogin formLogin);
     boolean checkExistByEmail(String email);
     boolean checkExistByPhone(String phone);

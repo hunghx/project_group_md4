@@ -1,71 +1,73 @@
 package ra.academy.dao.impl.catalog;
 
+
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ra.academy.dao.ICatalogDao;
+import ra.academy.model.Account;
 import ra.academy.model.Catalog;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Repository
 public class CatalogDao implements ICatalogDao {
     @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-    //    public CatalogDao(JdbcTemplate jdbcTemplate) {
-//        this.jdbcTemplate = jdbcTemplate;
-//    }
+    private SessionFactory sessionFactory;
+    @Autowired
+    private EntityManager entityManager;
 
     @Override
     public List<Catalog> findAll(int limit, int offset) {
-        String sql = "select * from catalog limit "+limit+" offset "+offset+"";
-        List<Catalog> list = jdbcTemplate.query(sql,
-                (rs, rowNum) -> {
-                    Catalog cat = new Catalog();
-                    cat.setId(rs.getLong("id"));
-                    cat.setName(rs.getString("name"));
-                    cat.setDescription(rs.getString("description"));
-                    return cat;
-                });
-        return list;
+        TypedQuery<Catalog> typedQuery = entityManager.createQuery("select A from Catalog A", Catalog.class);
+        List<Catalog> list = typedQuery.getResultList();
+        return list.stream().filter(acc -> list.indexOf(acc) >= offset).limit(limit).collect(Collectors.toList());
     }
+
     @Override
     public List<Catalog> findAll() {
-        String sql = "select * from catalog";
-        List<Catalog> list = jdbcTemplate.query(sql,
-                (rs, rowNum) -> {
-                    Catalog cat = new Catalog();
-                    cat.setId(rs.getLong("id"));
-                    cat.setName(rs.getString("name"));
-                    cat.setDescription(rs.getString("description"));
-                    return cat;
-                });
-        return list;
+        TypedQuery<Catalog> typedQuery = entityManager.createQuery("select A from Catalog A", Catalog.class);
+        return typedQuery.getResultList();
     }
 
     @Override
     public Catalog findById(Long id) {
-        String sql = "select * from catalog where id =?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{id}, new BeanPropertyRowMapper<>(Catalog.class));
+        TypedQuery<Catalog> typedQuery = entityManager.createQuery("select A from Catalog A where id =:id", Catalog.class);
+        typedQuery.setParameter("id",id);
+        return typedQuery.getSingleResult();
     }
 
     @Override
-    public int save(Catalog catalog) {
-        String sql = null;
+    public void save(Catalog catalog) {
+        Session session = sessionFactory.openSession();
+        Transaction tran = session.beginTransaction(); // tạo 1 phiên giao dịch
         if (catalog.getId() == null) {
             // thêm mới
-            sql = "Insert into catalog(name,description) values(?,?)";
-            return jdbcTemplate.update(sql, catalog.getName(), catalog.getDescription());
+            session.saveOrUpdate(catalog);
         } else {
-            sql = "update catalog set name=?,description=? where id =? ";
-            return jdbcTemplate.update(sql, catalog.getName(), catalog.getDescription(), catalog.getId());
+            // cập nhật
+            // phải lấy ra đối tượng cũ trước
+            Catalog old = findById(catalog.getId());
+            // cập nhật đối tượng cũ
+            old.copy(catalog); // commit sự thay đổi
+            session.saveOrUpdate(old);
         }
+        tran.commit();
+        session.close();
     }
 
     @Override
-    public int delete(Long id) {
-        String sql = "delete from catalog where id =?";
-        return jdbcTemplate.update(sql, id);
+    public void delete(Long id) {
+        Session session = sessionFactory.openSession();
+        Transaction tran = session.beginTransaction();
+        session.delete(findById(id));
+        tran.commit();
+        session.close();
     }
 }
